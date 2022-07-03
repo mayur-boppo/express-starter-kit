@@ -5,8 +5,8 @@
     "title": "Authentication Service REST APIS",
     "description": "Authentication Service REST APIS"
   },
-  "host": "'http://localhost:4000';",
-  "basePath": "/api",
+  "host": "http://localhost:3000",
+  "basePath": "",
   "tags": [
     {
       "name": "Authentication",
@@ -14,10 +14,14 @@
     }
   ],
   "schemes": [],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
-    "/register": {
+    "/api/user": {
       "post": {
         "description": "",
         "parameters": [
@@ -34,9 +38,6 @@
                   "example": "any"
                 },
                 "name": {
-                  "example": "any"
-                },
-                "user_type_id": {
                   "example": "any"
                 }
               }
@@ -73,52 +74,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/events": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/special": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"

@@ -8,11 +8,8 @@ const config = require("./config/config");
 const mongoose = require("mongoose");
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = config.PORT;
 const bodyParser = require("body-parser");
-
-const dotenv = require("dotenv");
-dotenv.config();
 
 app.use(
   bodyParser.urlencoded({
@@ -21,13 +18,13 @@ app.use(
 );
 app.use(bodyParser.json());
 // Import Routes
-const authRoute = require("./routes/index");
+const userRoutes = require("./routes/index");
 
 // app configs.
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(cors());
-app.use("/auth", authRoute);
+app.use(userRoutes);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
 const db = config.DB_HOST;

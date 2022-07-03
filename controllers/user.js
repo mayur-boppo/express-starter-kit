@@ -8,14 +8,13 @@ const User = require("../models/user.js");
 exports.register = async (req, res) => {
   //Hash password
   const salt = await bcrypt.genSalt(10);
-  const hasPassword = await bcrypt.hash(req.body.password, salt);
+  const hashPassword = await bcrypt.hash(req.body.password, salt);
 
   // Create an user object
   let user = new User({
     email: req.body.email,
     name: req.body.name,
-    password: hasPassword,
-    user_type_id: req.body.user_type_id,
+    password: hashPassword,
   });
 
   // Save User in the database
@@ -26,7 +25,7 @@ exports.register = async (req, res) => {
       // create payload then Generate an access token
       let payload = {
         id: registeredUser._id,
-        user_type_id: req.body.user_type_id || 0,
+        name: req.body.name,
       };
       const token = jwt.sign(payload, config.TOKEN_SECRET);
 

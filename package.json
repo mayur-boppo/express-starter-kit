@@ -5,11 +5,11 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js",
+    "start": "npm run swagger-autogen && node server.js",
     "swagger-autogen": "node swagger.js",
     "lint": "eslint --fix *.js",
     "prepare": "husky install",
-    "test": "",
+    "test": "mocha",
     "commit": "cz"
   },
   "keywords": [],
@@ -18,6 +18,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
+    "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
