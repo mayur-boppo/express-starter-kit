@@ -51,7 +51,7 @@
         }
       }
     },
-    "/login": {
+    "/api/login": {
       "post": {
         "description": "",
         "parameters": [
