@@ -12,7 +12,7 @@ const doc = {
     description: "Authentication Service REST APIS", // by default: ''
   },
   host: process.env.APP_HOST, // by default: 'localhost:3000'
-  basePath: "", // by default: '/'
+  basePath: "/api", // by default: '/'
   schemes: [], // by default: ['http']
   consumes: ["application/json"], // by default: ['application/json']
   produces: ["application/json"], // by default: ['application/json']

@@ -24,7 +24,7 @@ const userRoutes = require("./routes/index");
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(cors());
-app.use(userRoutes);
+app.use("/api", userRoutes);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerFile));
 
 const db = config.DB_HOST;
@@ -44,5 +44,4 @@ mongoose.connect(
 async function initialize() {
   app.listen(PORT);
 }
-
 initialize().finally(() => console.log(`app started on PORT:${PORT}`));

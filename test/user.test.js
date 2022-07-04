@@ -18,10 +18,12 @@ describe("User", function () {
         .post("/api/user/")
         .send(user)
         .end((err, res) => {
+          console.log(res);
           res.should.have.status(200);
           console.log("Response Body:", res.body);
           done();
         });
+      done();
     });
   });
   /// some other tests we will write here

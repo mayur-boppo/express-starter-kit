@@ -6,7 +6,7 @@
     "description": "Authentication Service REST APIS"
   },
   "host": "http://localhost:3000",
-  "basePath": "",
+  "basePath": "/api",
   "tags": [
     {
       "name": "Authentication",
@@ -21,7 +21,7 @@
     "application/json"
   ],
   "paths": {
-    "/api/user": {
+    "/user": {
       "post": {
         "description": "",
         "parameters": [
@@ -32,12 +32,6 @@
               "type": "object",
               "properties": {
                 "password": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "name": {
                   "example": "any"
                 }
               }
@@ -51,7 +45,7 @@
         }
       }
     },
-    "/api/login": {
+    "/login": {
       "post": {
         "description": "",
         "parameters": [

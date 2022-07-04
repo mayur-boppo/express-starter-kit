@@ -1,39 +1,41 @@
 const config = require("../config/config");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/user.js");
-
-// Connect to DB auth
-
+const Joi = require("joi");
+const _responseHelper = require("../helper/response");
+const { HttpStatus } = require("../constants/httpstatus");
+const userManager = require("../services/user.js");
 exports.register = async (req, res) => {
-  //Hash password
-  const salt = await bcrypt.genSalt(10);
-  const hashPassword = await bcrypt.hash(req.body.password, salt);
-
-  // Create an user object
-  let user = new User({
-    email: req.body.email,
-    name: req.body.name,
-    password: hashPassword,
+  // Validate data
+  const schema = Joi.object({
+    name: Joi.string().min(3).max(30).required(),
+    password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+    email: Joi.string().email({
+      minDomainSegments: 2,
+      tlds: { allow: ["com", "net"] },
+    }),
   });
+  const { error, value } = await schema.validate(req.body);
+  if (error) {
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .send(`${error.details.map((x) => x.message).join(", ")}`);
+  } else {
+    req.body = value;
+    next();
+  }
 
-  // Save User in the database
-  user.save((err, registeredUser) => {
-    if (err) {
-      console.log(err);
-    } else {
-      // create payload then Generate an access token
-      let payload = {
-        id: registeredUser._id,
-        name: req.body.name,
-      };
-      const token = jwt.sign(payload, config.TOKEN_SECRET);
-
-      res.status(200).send({ token });
-    }
-  });
+  try {
+    //Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.password, salt);
+    req.body.password = hashPassword;
+    const saveUser = await userManager.register(req.body);
+    res.status(200).send({ saveUser });
+  } catch (err) {
+    console.log(err);
+  }
 };
-
 exports.login = async (req, res) => {
   User.findOne({ email: req.body.email }, async (err, user) => {
     if (err) {
@@ -57,71 +59,4 @@ exports.login = async (req, res) => {
       }
     }
   });
-};
-
-// Access auth users only
-exports.userEvent = (req, res) => {
-  let events = [
-    {
-      _id: "1",
-      name: "Auto Expo",
-      description: "lorem ipsum",
-      date: "2012-04-23T18:25:43.511Z",
-    },
-    {
-      _id: "2",
-      name: "Auto Expo",
-      description: "lorem ipsum",
-      date: "2012-04-23T18:25:43.511Z",
-    },
-    {
-      _id: "3",
-      name: "Auto Expo",
-      description: "lorem ipsum",
-      date: "2012-04-23T18:25:43.511Z",
-    },
-  ];
-  res.json(events);
-};
-
-exports.adminEvent = (req, res) => {
-  let specialEvents = [
-    {
-      _id: "1",
-      name: "Auto Expo Special",
-      description: "lorem ipsum",
-      date: "2012-04-23T18:25:43.511Z",
-    },
-    {
-      _id: "2",
-      name: "Auto Expo Special",
-      description: "lorem ipsum",
-      date: "2012-04-23T18:25:43.511Z",
-    },
-    {
-      _id: "3",
-      name: "Auto Expo Special",
-      description: "lorem ipsum",
-      date: "2012-04-23T18:25:43.511Z",
-    },
-    {
-      _id: "4",
-      name: "Auto Expo Special",
-      description: "lorem ipsum",
-      date: "2012-04-23T18:25:43.511Z",
-    },
-    {
-      _id: "5",
-      name: "Auto Expo Special",
-      description: "lorem ipsum",
-      date: "2012-04-23T18:25:43.511Z",
-    },
-    {
-      _id: "6",
-      name: "Auto Expo Special",
-      description: "lorem ipsum",
-      date: "2012-04-23T18:25:43.511Z",
-    },
-  ];
-  res.json(specialEvents);
 };

@@ -3,10 +3,10 @@ const { verifyUserToken, IsAdmin, IsUser } = require("../middleware/auth");
 const userController = require("../controllers/user");
 
 // Register a new User
-router.post("/api/user", userController.register);
+router.post("/user", userController.register);
 
 // Login
-router.post("/api/login", userController.login);
+router.post("/login", userController.login);
 
 // other routes
 
